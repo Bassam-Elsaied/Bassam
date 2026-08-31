@@ -34,7 +34,7 @@ const PROBING: QualityProfile = {
 
 const PRESETS: Record<Quality, Omit<QualityProfile, "webgl" | "reducedMotion" | "ready" | "quality">> =
   {
-    high: { dpr: [1, 2], shadows: true, shadowMapSize: 2048, particleCount: 100 },
+    high: { dpr: [1, 1.75], shadows: true, shadowMapSize: 1024, particleCount: 80 },
     medium: { dpr: [1, 1.5], shadows: true, shadowMapSize: 1024, particleCount: 55 },
     low: { dpr: [1, 1], shadows: false, shadowMapSize: 0, particleCount: 24 },
   };

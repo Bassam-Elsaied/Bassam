@@ -4,8 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 import { navItems } from "@/data/navigation";
-import { navigateToBoard } from "@/lib/three/navigateToBoard";
-import { playTransitionOverlay } from "@/lib/three/transitionBridge";
+import { flyToBoard } from "@/lib/studioNavigation";
 import { cn } from "@/lib/utils";
 import { selectStudioSurface, useExperienceStore } from "@/store/experience";
 import type { BoardId } from "@/data/boards";
@@ -37,9 +36,7 @@ export function DesktopNav() {
                 onClick={(event) => {
                   if (!overWorld) return;
                   event.preventDefault();
-                  void navigateToBoard(item.id as BoardId, router, {
-                    playOverlay: playTransitionOverlay,
-                  });
+                  void flyToBoard(item.id as BoardId, router);
                 }}
                 className="group flex items-baseline gap-2 py-1"
               >

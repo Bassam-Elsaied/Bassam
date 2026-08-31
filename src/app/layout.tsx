@@ -9,19 +9,24 @@ import { profile } from "@/data/profile";
 import { personJsonLd, websiteJsonLd, siteUrl } from "@/lib/seo";
 import "@/styles/globals.css";
 
-/** Display face — variable weight and width for editorial headlines. */
+/** Display face — editorial headlines. Weight 400–500 only. */
 const archivo = Archivo({
   variable: "--font-archivo",
   subsets: ["latin"],
-  axes: ["wdth"],
+  weight: ["400", "500"],
   display: "swap",
+  adjustFontFallback: true,
+  preload: true,
 });
 
 /** Technical face — metadata, labels, indices, form hints. */
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  weight: "400",
   display: "swap",
+  adjustFontFallback: true,
+  preload: true,
 });
 
 export const metadata: Metadata = {

@@ -37,8 +37,8 @@ export function ProjectFeature({
             <ImageReveal
               src={project.image}
               alt={`${project.title} interface`}
-              width={1202}
-              height={720}
+              width={1400}
+              height={840}
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="border-line-strong aspect-4/3 border"
               imageClassName="object-cover object-top transition-transform duration-700 ease-editorial group-hover:scale-[1.03]"
@@ -67,26 +67,32 @@ export function ProjectFeature({
             {project.description}
           </p>
 
-          <ul className="mt-6 space-y-2">
-            {project.outcomes.slice(0, 3).map((item) => (
-              <li
-                key={item}
-                className="text-muted flex gap-3 text-sm tracking-tight"
-              >
-                <span
-                  aria-hidden="true"
-                  className="bg-accent mt-2 h-1 w-1 shrink-0"
-                />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
+          <div className="mt-6">
+            <MetaLabel as="p">What was built</MetaLabel>
+            <ul className="mt-3 space-y-2">
+              {project.outcomes.slice(0, 3).map((item) => (
+                <li
+                  key={item}
+                  className="text-muted flex gap-3 text-sm tracking-tight"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="bg-accent mt-2 h-1 w-1 shrink-0"
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          <TechList
-            items={project.tech}
-            label={`Technologies used in ${project.title}`}
-            className="mt-8"
-          />
+          <div className="mt-8">
+            <MetaLabel as="p">Stack</MetaLabel>
+            <TechList
+              items={project.tech}
+              label={`Technologies used in ${project.title}`}
+              className="mt-4"
+            />
+          </div>
 
           {project.github ? (
             <div className="mt-9">

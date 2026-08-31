@@ -31,10 +31,14 @@ import { useDeviceQuality } from "@/hooks/useDeviceQuality";
 import type { BoardId } from "@/data/boards";
 import { lockBodyScroll } from "@/lib/scrollLock";
 import { cameraRig, resetCameraRig } from "@/lib/three/cameraRig";
+import { resetCameraLookSession } from "@/lib/three/cameraLook";
+import { killActiveCameraTransition } from "@/lib/three/cameraTransition";
 import { clearMovementInput } from "@/lib/three/movementInput";
 import { movementGate } from "@/lib/three/movementGate";
 import { navigateToBoard } from "@/lib/three/navigateToBoard";
+import { resetNavigationFlight } from "@/lib/three/navigationFlight";
 import { setTransitionOverlayPlayer } from "@/lib/three/transitionBridge";
+import { setWorldHalt } from "@/lib/three/worldHalt";
 import {
   selectDocumentVisible,
   selectOverWorld,
@@ -78,6 +82,7 @@ export function ExperienceLayer() {
   const { active: assetsLoading, loaded, total, progress } = useProgress();
   const [canvasReady, setCanvasReady] = useState(false);
   const markedReady = useRef(false);
+  const [loaderPresent, setLoaderPresent] = useState(true);
 
   const [dpr, setDpr] = useState({
     tier: quality.dpr[1],
@@ -88,6 +93,23 @@ export function ExperienceLayer() {
   if (dpr.tier !== quality.dpr[1]) {
     setDpr({ tier: quality.dpr[1], ceiling: quality.dpr[1] });
   }
+
+  /* Bind camera/input teardown before bootHome can call into the store. */
+  useLayoutEffect(() => {
+    const halt = () => {
+      killActiveCameraTransition();
+      resetNavigationFlight();
+      resetCameraRig();
+      resetCameraLookSession();
+      movementGate.unlock();
+      clearMovementInput();
+    };
+    setWorldHalt(halt);
+    return () => {
+      halt();
+      setWorldHalt(null);
+    };
+  }, []);
 
   /* Boot whenever this layer is the active homepage surface. `mode` /
      `skipped` are deps so a cached App Router restore cannot leave a
@@ -246,16 +268,25 @@ export function ExperienceLayer() {
     !skipped &&
     (!quality.ready || mode === "probing" || mode === "loading");
 
+  if (showLoader && !loaderPresent) {
+    setLoaderPresent(true);
+  }
+
   /* Capability still resolving — keep the studio covered so the HTML
      homepage does not flash underneath. */
   if (!quality.ready) {
     if (skipped) return null;
-    return <StudioLoader visible progress={progress} />;
+    return <StudioLoader visible progress={progress} onSkip={onSkip} />;
   }
 
   return (
     <>
-      <StudioLoader visible={showLoader} progress={progress} />
+      <StudioLoader
+        visible={showLoader}
+        progress={progress}
+        onSkip={onSkip}
+        onExited={() => setLoaderPresent(false)}
+      />
       <TransitionOverlay ref={overlayRef} />
       <StudioCursor />
 
@@ -325,7 +356,7 @@ export function ExperienceLayer() {
             </Canvas>
           </div>
 
-          {mode === "loading" || exploring ? (
+          {exploring && !loaderPresent ? (
             <SkipExplorationControl onSkip={onSkip} />
           ) : null}
 

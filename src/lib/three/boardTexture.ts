@@ -11,8 +11,12 @@ import {
 import type { BoardFace } from "@/lib/three/boardFaces";
 import { palette } from "@/lib/three/palette";
 
-const W = 1024;
-const H = 682;
+const BASE_W = 1024;
+const BASE_H = 682;
+
+function canvasWidthFor(detail: "full" | "lite") {
+  return detail === "lite" ? 512 : 768;
+}
 
 function loadImage(src: string): Promise<HTMLImageElement | null> {
   return new Promise((resolve) => {
@@ -26,21 +30,21 @@ function loadImage(src: string): Promise<HTMLImageElement | null> {
 
 function paintBase(ctx: CanvasRenderingContext2D) {
   ctx.fillStyle = palette.panel;
-  ctx.fillRect(0, 0, W, H);
+  ctx.fillRect(0, 0, BASE_W, BASE_H);
 
   /* Quiet paper grain via soft vignette — no noisy texture assets. */
   const vignette = ctx.createRadialGradient(
-    W * 0.5,
-    H * 0.42,
-    H * 0.08,
-    W * 0.5,
-    H * 0.5,
-    H * 0.8,
+    BASE_W * 0.5,
+    BASE_H * 0.42,
+    BASE_H * 0.08,
+    BASE_W * 0.5,
+    BASE_H * 0.5,
+    BASE_H * 0.8,
   );
   vignette.addColorStop(0, "rgba(36,31,26,0)");
   vignette.addColorStop(1, "rgba(36,31,26,0.16)");
   ctx.fillStyle = vignette;
-  ctx.fillRect(0, 0, W, H);
+  ctx.fillRect(0, 0, BASE_W, BASE_H);
 }
 
 function paintEyebrow(ctx: CanvasRenderingContext2D, eyebrow: string) {
@@ -70,7 +74,7 @@ function paintTitleBlock(
 function paintMeta(ctx: CanvasRenderingContext2D, meta: string) {
   ctx.fillStyle = palette.accent;
   ctx.font = "500 20px 'Geist Mono', ui-monospace, monospace";
-  ctx.fillText(meta.toUpperCase(), 48, H - 44);
+  ctx.fillText(meta.toUpperCase(), 48, BASE_H - 44);
 }
 
 function drawCover(
@@ -97,11 +101,30 @@ function drawCover(
   ctx.restore();
 }
 
-async function paintFace(face: BoardFace): Promise<HTMLCanvasElement> {
+function makeCanvas(pixelWidth: number) {
+  const scale = pixelWidth / BASE_W;
   const canvas = document.createElement("canvas");
-  canvas.width = W;
-  canvas.height = H;
+  canvas.width = pixelWidth;
+  canvas.height = Math.round(BASE_H * scale);
   const ctx = canvas.getContext("2d");
+  if (ctx) {
+    ctx.scale(scale, scale);
+  }
+  return { canvas, ctx };
+}
+
+function paintChrome(ctx: CanvasRenderingContext2D, face: BoardFace) {
+  paintBase(ctx);
+  paintEyebrow(ctx, face.eyebrow);
+  paintTitleBlock(ctx, face.title, face.subtitle);
+  paintMeta(ctx, face.meta);
+}
+
+async function paintFace(
+  face: BoardFace,
+  pixelWidth: number,
+): Promise<HTMLCanvasElement> {
+  const { canvas, ctx } = makeCanvas(pixelWidth);
   if (!ctx) return canvas;
 
   paintBase(ctx);
@@ -131,9 +154,9 @@ async function paintFace(face: BoardFace): Promise<HTMLCanvasElement> {
     ).filter((img): img is HTMLImageElement => !!img);
 
     if (images.length > 0) {
-      const stripY = H - 168;
+      const stripY = BASE_H - 168;
       const gap = 12;
-      const cellW = (W - 96 - gap * (Math.min(3, images.length) - 1)) / Math.min(3, images.length);
+      const cellW = (BASE_W - 96 - gap * (Math.min(3, images.length) - 1)) / Math.min(3, images.length);
       images.slice(0, 3).forEach((img, i) => {
         drawCover(ctx, img, 48 + i * (cellW + gap), stripY, cellW, 100);
       });
@@ -143,9 +166,9 @@ async function paintFace(face: BoardFace): Promise<HTMLCanvasElement> {
 
     const img = await loadImage(face.image);
     if (img) {
-      const frameW = W * 0.4;
-      const frameH = H * 0.56;
-      const fx = W - frameW - 52;
+      const frameW = BASE_W * 0.4;
+      const frameH = BASE_H * 0.56;
+      const fx = BASE_W - frameW - 52;
       const fy = 200;
       ctx.fillStyle = palette.frame;
       ctx.fillRect(fx - 12, fy - 12, frameW + 24, frameH + 24);
@@ -181,7 +204,7 @@ async function paintFace(face: BoardFace): Promise<HTMLCanvasElement> {
     let ly = 280;
     for (const word of words) {
       const test = line ? `${line} ${word}` : word;
-      if (ctx.measureText(test).width > W - 96) {
+      if (ctx.measureText(test).width > BASE_W - 96) {
         ctx.fillText(line, 48, ly);
         line = word;
         ly += 58;
@@ -197,7 +220,7 @@ async function paintFace(face: BoardFace): Promise<HTMLCanvasElement> {
         i === 0
           ? "500 26px 'Geist Mono', ui-monospace, monospace"
           : "500 24px Archivo, system-ui, sans-serif";
-      ctx.fillText(entry, 48, H - 140 + i * 40);
+      ctx.fillText(entry, 48, BASE_H - 140 + i * 40);
     });
   }
 
@@ -217,22 +240,23 @@ function toTexture(canvas: HTMLCanvasElement): Texture {
 /**
  * Builds a board-face texture on the client. Returns null until paint
  * completes so the panel can fall back to solid paper.
+ *
+ * `lite` paints at half resolution — enough for a wall-sized board on
+ * phones, and it keeps the intro from decoding four 1024 canvases.
  */
-export function useBoardFaceTexture(face: BoardFace): Texture | null {
+export function useBoardFaceTexture(
+  face: BoardFace,
+  detail: "full" | "lite" = "full",
+): Texture | null {
   const key = useMemo(() => JSON.stringify(face), [face]);
+  const pixelWidth = canvasWidthFor(detail);
   const [texture, setTexture] = useState<Texture | null>(() => {
     if (typeof document === "undefined") return null;
     /* Synchronous chrome so boards never sit as blank paper while images load. */
     try {
-      const canvas = document.createElement("canvas");
-      canvas.width = W;
-      canvas.height = H;
-      const ctx = canvas.getContext("2d");
+      const { canvas, ctx } = makeCanvas(pixelWidth);
       if (!ctx) return null;
-      paintBase(ctx);
-      paintEyebrow(ctx, face.eyebrow);
-      paintTitleBlock(ctx, face.title, face.subtitle);
-      paintMeta(ctx, face.meta);
+      paintChrome(ctx, face);
       return toTexture(canvas);
     } catch {
       return null;
@@ -243,7 +267,7 @@ export function useBoardFaceTexture(face: BoardFace): Texture | null {
     let cancelled = false;
     let built: Texture | null = null;
 
-    paintFace(face).then((canvas) => {
+    paintFace(face, pixelWidth).then((canvas) => {
       if (cancelled) return;
       built = toTexture(canvas);
       setTexture((previous) => {
@@ -257,7 +281,7 @@ export function useBoardFaceTexture(face: BoardFace): Texture | null {
       built?.dispose();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key]);
+  }, [key, pixelWidth]);
 
   return texture;
 }

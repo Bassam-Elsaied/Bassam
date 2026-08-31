@@ -63,6 +63,8 @@ export function ImageReveal({
             height={height}
             sizes={sizes}
             priority={priority}
+            loading={priority ? "eager" : "lazy"}
+            decoding="async"
             className={cn("h-full w-full object-cover", imageClassName)}
           />
         </motion.div>

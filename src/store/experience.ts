@@ -1,12 +1,7 @@
 import { create } from "zustand";
 
 import type { BoardId } from "@/data/boards";
-import { resetCameraRig } from "@/lib/three/cameraRig";
-import { killActiveCameraTransition } from "@/lib/three/cameraTransition";
-import { resetCameraLookSession } from "@/lib/three/cameraLook";
-import { clearMovementInput } from "@/lib/three/movementInput";
-import { resetNavigationFlight } from "@/lib/three/navigationFlight";
-import { movementGate } from "@/lib/three/movementGate";
+import { haltWorld } from "@/lib/three/worldHalt";
 
 /**
  * Discrete experience state only.
@@ -94,12 +89,7 @@ function canExplore(mode: ExperienceMode) {
 }
 
 function haltWorldSideEffects() {
-  killActiveCameraTransition();
-  resetNavigationFlight();
-  resetCameraRig();
-  resetCameraLookSession();
-  movementGate.unlock();
-  clearMovementInput();
+  haltWorld();
 }
 
 export const useExperienceStore = create<ExperienceState>((set, get) => ({

@@ -57,7 +57,10 @@ function InteractiveBoard({
       s.activeBoardId === board.id,
   );
   const face = boardFaces[board.id];
-  const texture = useBoardFaceTexture(face);
+  const texture = useBoardFaceTexture(
+    face,
+    quality.quality === "low" ? "lite" : "full",
+  );
 
   const root = useRef<Group>(null);
   const rimRef = useRef<Mesh>(null);

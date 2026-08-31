@@ -27,9 +27,11 @@ export function WorkArchive({ projects }: { projects: Project[] }) {
                   <Image
                     src={project.image}
                     alt={`${project.title} interface`}
-                    width={1202}
-                    height={720}
+                    width={1400}
+                    height={840}
                     sizes="(max-width: 640px) 100vw, 33vw"
+                    loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-cover object-top transition-transform duration-700 ease-editorial group-hover:scale-[1.03]"
                   />
                 </div>
@@ -54,26 +56,32 @@ export function WorkArchive({ projects }: { projects: Project[] }) {
                 {project.description}
               </p>
 
-              <ul className="mt-5 space-y-2">
-                {project.outcomes.map((item) => (
-                  <li
-                    key={item}
-                    className="text-muted flex gap-3 text-sm tracking-tight"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="bg-accent mt-2 h-1 w-1 shrink-0"
-                    />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
+              <div className="mt-5">
+                <MetaLabel as="p">What was built</MetaLabel>
+                <ul className="mt-3 space-y-2">
+                  {project.outcomes.map((item) => (
+                    <li
+                      key={item}
+                      className="text-muted flex gap-3 text-sm tracking-tight"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="bg-accent mt-2 h-1 w-1 shrink-0"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-              <TechList
-                items={project.tech}
-                label={`Technologies used in ${project.title}`}
-                className="mt-6"
-              />
+              <div className="mt-6">
+                <MetaLabel as="p">Implementation</MetaLabel>
+                <TechList
+                  items={project.tech}
+                  label={`Technologies used in ${project.title}`}
+                  className="mt-3"
+                />
+              </div>
 
               <div className="mt-7 flex flex-wrap items-center gap-x-7 gap-y-3">
                 {project.live ? (

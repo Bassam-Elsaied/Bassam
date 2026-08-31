@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import emailjs, { EmailJSResponseStatus } from "@emailjs/browser";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -44,8 +43,13 @@ type ContactFormProps = {
 };
 
 function emailJsErrorText(error: unknown): string {
-  if (error instanceof EmailJSResponseStatus) {
-    return error.text || String(error.status);
+  if (
+    error &&
+    typeof error === "object" &&
+    "text" in error &&
+    typeof error.text === "string"
+  ) {
+    return error.text || String("status" in error ? error.status : "");
   }
   if (error instanceof Error) {
     return error.message;
@@ -78,12 +82,6 @@ export function ContactForm({
      does not re-render the whole form. */
   const messageLength =
     useWatch({ control, name: "message" })?.length ?? 0;
-
-  useEffect(() => {
-    if (publicKey) {
-      emailjs.init({ publicKey });
-    }
-  }, [publicKey]);
 
   useEffect(() => {
     if (!errorMessage) return;
@@ -120,6 +118,7 @@ export function ContactForm({
     };
 
     try {
+      const emailjs = (await import("@emailjs/browser")).default;
       await emailjs.send(serviceId, templateId, templateParams, { publicKey });
       setSent(values);
       reset();

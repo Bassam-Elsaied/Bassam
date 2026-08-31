@@ -59,11 +59,15 @@ export function personJsonLd() {
       .map((s) => s.href),
     knowsAbout: [
       "Frontend Development",
+      "Full-Stack Development",
       "React",
       "Next.js",
       "TypeScript",
       "Node.js",
+      "APIs",
+      "E-commerce",
       "Three.js",
+      "Performance Optimization",
     ],
   };
 }

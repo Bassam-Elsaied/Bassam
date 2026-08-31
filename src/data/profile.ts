@@ -37,7 +37,7 @@ export const profile = {
 
   /** Drop the PDF into /public to activate the CV links site-wide. */
   cvUrl: "/Bassam_Elsayed_CV.pdf",
-  portrait: "/images/bassam-portrait.png",
+  portrait: "/images/bassam-portrait.webp",
   portraitSize: { width: 614, height: 816 },
 
   headline: {

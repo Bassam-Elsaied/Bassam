@@ -10,8 +10,7 @@ import { navItems } from "@/data/navigation";
 import { profile, socials } from "@/data/profile";
 import type { BoardId } from "@/data/boards";
 import { lockBodyScroll } from "@/lib/scrollLock";
-import { navigateToBoard } from "@/lib/three/navigateToBoard";
-import { playTransitionOverlay } from "@/lib/three/transitionBridge";
+import { flyToBoard } from "@/lib/studioNavigation";
 import { cn } from "@/lib/utils";
 import { selectStudioSurface, useExperienceStore } from "@/store/experience";
 
@@ -179,9 +178,7 @@ export function MobileNav() {
                           }
                           event.preventDefault();
                           close();
-                          void navigateToBoard(item.id as BoardId, router, {
-                            playOverlay: playTransitionOverlay,
-                          });
+                          void flyToBoard(item.id as BoardId, router);
                         }}
                         className="group flex items-baseline gap-4 py-5"
                       >

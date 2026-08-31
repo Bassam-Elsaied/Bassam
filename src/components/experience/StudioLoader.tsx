@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
+import { SkipExplorationButton } from "@/components/experience/ExperienceControls";
 import { MetaLabel } from "@/components/ui/MetaLabel";
 import { profile } from "@/data/profile";
 
@@ -23,9 +24,13 @@ function statusFor(progress: number) {
 export function StudioLoader({
   progress = 0,
   visible,
+  onSkip,
+  onExited,
 }: {
   progress?: number;
   visible: boolean;
+  onSkip?: () => void;
+  onExited?: () => void;
 }) {
   const reduced = useReducedMotion();
   const percent = Math.max(0, Math.min(100, Math.round(progress)));
@@ -34,7 +39,7 @@ export function StudioLoader({
   const label = String(shown).padStart(2, "0");
 
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={onExited}>
       {visible ? (
         <motion.div
           data-studio-loader=""
@@ -72,22 +77,33 @@ export function StudioLoader({
           />
 
           <div className="relative flex flex-1 flex-col px-[max(1.25rem,env(safe-area-inset-left))] pr-[max(1.25rem,env(safe-area-inset-right))] pt-[max(5.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:px-8 lg:px-12 xl:px-16">
-            <header className="flex items-baseline justify-between gap-6">
-              <motion.div
-                initial={reduced ? false : { opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, ease: EASE, delay: 0.05 }}
-              >
-                <MetaLabel marker>00 — Studio</MetaLabel>
-              </motion.div>
-              <motion.p
-                className="meta-sm text-muted"
-                initial={reduced ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.7, ease: EASE, delay: 0.15 }}
-              >
-                {profile.location}
-              </motion.p>
+            <header>
+              <div className="flex items-baseline justify-between gap-6">
+                <motion.div
+                  initial={reduced ? false : { opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, ease: EASE, delay: 0.05 }}
+                >
+                  <MetaLabel marker>00 — Studio</MetaLabel>
+                </motion.div>
+                <motion.p
+                  className="meta-sm text-muted"
+                  initial={reduced ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.7, ease: EASE, delay: 0.15 }}
+                >
+                  {profile.location}
+                </motion.p>
+              </div>
+              <div className="mt-5 flex min-h-7 items-center">
+                {onSkip ? (
+                  <SkipExplorationButton onSkip={onSkip} tone="paper" />
+                ) : (
+                  <span className="meta-sm invisible" aria-hidden="true">
+                    Skip exploration →
+                  </span>
+                )}
+              </div>
             </header>
 
             <div className="flex flex-1 flex-col justify-center py-16 lg:py-20">

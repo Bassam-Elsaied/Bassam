@@ -13,8 +13,8 @@ type WorkCaseProps = {
 };
 
 /**
- * Levo-style project block: numbered capability row, clear copy about what
- * shipped, tech run, optional source link — media supports the write-up.
+ * Project write-up. Existing copy, grouped so the build is easier to read:
+ * overview, what shipped, how it was implemented.
  */
 export function WorkCase({ project, index }: WorkCaseProps) {
   const n = String(index + 1).padStart(2, "0");
@@ -37,41 +37,58 @@ export function WorkCase({ project, index }: WorkCaseProps) {
             <span className="meta-sm text-muted tabular-nums">{n}</span>
             <MetaLabel>Project</MetaLabel>
             <MetaLabel>{project.scope}</MetaLabel>
+            {project.year ? <MetaLabel>{project.year}</MetaLabel> : null}
           </div>
 
           <h3 className="display-sm mt-5 lg:mt-6">{project.title}</h3>
           <p className="meta-sm text-muted mt-3">{project.category}</p>
 
-          <p className="body-text text-muted mt-6 max-w-prose">
-            {project.description}
-          </p>
+          <section className="mt-6">
+            <MetaLabel as="p">Overview</MetaLabel>
+            <p className="body-text text-muted mt-3 max-w-prose">
+              {project.description}
+            </p>
+          </section>
 
-          <ul className="border-line mt-7 space-y-3 border-t pt-6">
-            {project.outcomes.map((item) => (
-              <li
-                key={item}
-                className="text-muted flex gap-3 text-sm tracking-tight"
-              >
-                <span
-                  aria-hidden="true"
-                  className="bg-accent mt-2 h-1 w-1 shrink-0"
-                />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
+          <section className="border-line mt-7 border-t pt-6">
+            <MetaLabel as="p">What was built</MetaLabel>
+            <ul className="mt-4 space-y-3">
+              {project.outcomes.map((item) => (
+                <li
+                  key={item}
+                  className="text-muted flex gap-3 text-sm tracking-tight"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="bg-accent mt-2 h-1 w-1 shrink-0"
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
 
-          <TechList
-            items={project.tech}
-            label={`Technologies used in ${project.title}`}
-            className="mt-8"
-          />
+          <section className="mt-8">
+            <MetaLabel as="p">Implementation</MetaLabel>
+            <TechList
+              items={project.tech}
+              label={`Technologies used in ${project.title}`}
+              className="mt-4"
+            />
+          </section>
 
-          {project.github ? (
-            <div className="mt-9">
-              <ArrowLink href={project.github} external>
-                Source
-              </ArrowLink>
+          {project.github || project.live ? (
+            <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-3">
+              {project.live ? (
+                <ArrowLink href={project.live} external>
+                  Live site
+                </ArrowLink>
+              ) : null}
+              {project.github ? (
+                <ArrowLink href={project.github} external>
+                  Source
+                </ArrowLink>
+              ) : null}
             </div>
           ) : null}
         </div>
@@ -86,8 +103,8 @@ export function WorkCase({ project, index }: WorkCaseProps) {
             <ImageReveal
               src={project.image}
               alt={`${project.title} interface`}
-              width={1202}
-              height={720}
+              width={1400}
+              height={840}
               sizes="(max-width: 1024px) 100vw, 58vw"
               className="border-line-strong aspect-16/10 border"
               imageClassName="object-cover object-top transition-transform duration-700 ease-editorial group-hover:scale-[1.03]"
