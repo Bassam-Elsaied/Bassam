@@ -1,0 +1,8 @@
+VR Modern Gallery Room
+Author: Maxim Mavrichev (@mvrc.art)
+Source: https://sketchfab.com/3d-models/vr-modern-gallery-room-499f13ada6234cb8a914a072c3013e82
+License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+
+Attribution required for commercial and portfolio use.
+Runtime file: gallery.glb

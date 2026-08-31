@@ -1,0 +1,52 @@
+{
+  "name": "portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "verify": "node scripts/verify.mjs",
+    "verify:interact": "node scripts/interact.mjs",
+    "verify:world": "node scripts/verify-world.mjs",
+    "verify:persistence": "node scripts/verify-persistence.mjs",
+    "verify:character": "node scripts/verify-character.mjs",
+    "verify:boards": "node scripts/verify-boards.mjs",
+    "verify:hardening": "node scripts/verify-hardening.mjs",
+    "verify:home": "node scripts/verify-home-reentry.mjs",
+    "probe:perf": "node scripts/probe-perf.mjs"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "@hookform/resolvers": "^5.9.1",
+    "@react-three/drei": "10.7.8",
+    "@react-three/fiber": "9.7.0",
+    "clsx": "^2.1.1",
+    "gsap": "^3.15.0",
+    "maath": "0.10.8",
+    "motion": "^13.1.1",
+    "next": "16.3.3",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-hook-form": "^7.87.0",
+    "tailwind-merge": "^3.6.0",
+    "three": "0.185.1",
+    "zod": "^4.5.4",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "0.185.4",
+    "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.3",
+    "playwright": "^1.62.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

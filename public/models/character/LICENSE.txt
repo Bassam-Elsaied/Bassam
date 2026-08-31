@@ -1,0 +1,5 @@
+Quaternius Ultimate Modular Men Pack — Suit
+Source: https://quaternius.com/packs/ultimatemodularcharacters.html
+Official download folder: https://drive.google.com/drive/folders/1USAAquX2JJWuA2m6zol0KUkFe3UkZ8zX
+License: CC0 1.0 — https://creativecommons.org/publicdomain/zero/1.0/
+Only the Suit humanoid GLB is included at runtime.
