@@ -66,7 +66,11 @@ export function TextReveal({
             /* Padding gives descenders room inside the clip box. */
             className="inline-block overflow-hidden pb-[0.14em] align-bottom -mb-[0.14em]"
           >
-            <motion.span className="inline-block" data-reveal="" variants={word}>
+            <motion.span
+              className="inline-block"
+              data-reveal=""
+              variants={word}
+            >
               {w}
             </motion.span>
             {i < words.length - 1 ? "\u00A0" : null}

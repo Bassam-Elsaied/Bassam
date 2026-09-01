@@ -26,9 +26,7 @@ export default function ServicesPage() {
             <MetaLabel as="p" marker>
               03 — Services
             </MetaLabel>
-            <p className="meta-sm text-muted">
-              {services.length} capabilities
-            </p>
+            <p className="meta-sm text-muted">{services.length} capabilities</p>
           </div>
 
           <TextReveal
@@ -71,14 +69,19 @@ export default function ServicesPage() {
               <MetaLabel as="p" marker className="lg:col-span-3">
                 01 — Approach
               </MetaLabel>
-              <p id="approach-heading" className="lead lg:col-span-8 lg:col-start-5">
+              <p
+                id="approach-heading"
+                className="lead lg:col-span-8 lg:col-start-5"
+              >
                 Same person on the interface and the data when the product needs
                 it —{" "}
                 <strong className="text-foreground font-medium">
                   maintainable
                 </strong>
                 ,{" "}
-                <strong className="text-foreground font-medium">documented</strong>
+                <strong className="text-foreground font-medium">
+                  documented
+                </strong>
                 , and handed over as a real build, not a demo.
               </p>
             </div>
@@ -98,7 +101,10 @@ export default function ServicesPage() {
                 <MetaLabel as="p" marker className="mb-4">
                   02 — Capabilities
                 </MetaLabel>
-                <h2 id="capabilities-heading" className="display-md max-w-[14ch]">
+                <h2
+                  id="capabilities-heading"
+                  className="display-md max-w-[14ch]"
+                >
                   What I build
                   <span className="text-accent">.</span>
                 </h2>
@@ -194,11 +200,7 @@ export default function ServicesPage() {
       <section aria-labelledby="project-in-mind">
         <div className="grid lg:grid-cols-2">
           <Reveal className="bg-ink text-background px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24 xl:px-16">
-            <MetaLabel
-              as="p"
-              marker
-              className="text-[var(--color-ink-muted)]"
-            >
+            <MetaLabel as="p" marker className="text-[var(--color-ink-muted)]">
               03 — Next
             </MetaLabel>
             <h2 id="project-in-mind" className="display-md mt-6 max-w-[14ch]">

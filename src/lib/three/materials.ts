@@ -50,6 +50,12 @@ export function useGalleryMaterials() {
     const figureGrey = makeStandard(palette.figureGrey, 0.88);
     const figureSkin = makeStandard(palette.figureSkin, 0.82);
     const figureHair = makeStandard(palette.figureHair, 0.95);
+    const figureHairBrown = makeStandard(palette.figureHairBrown, 0.95);
+    const figureHairBlond = makeStandard(palette.figureHairBlond, 0.9);
+    const figureNavy = makeStandard(palette.figureNavy, 0.92);
+    const figureOlive = makeStandard(palette.figureOlive, 0.92);
+    const figureRust = makeStandard(palette.figureRust, 0.9);
+    const figureDenim = makeStandard(palette.figureDenim, 0.9);
     const figureAccent = makeStandard(palette.accent, 0.72, 0, {
       emissive: new Color(palette.accent),
       emissiveIntensity: 0.04,
@@ -68,6 +74,12 @@ export function useGalleryMaterials() {
       figureGrey,
       figureSkin,
       figureHair,
+      figureHairBrown,
+      figureHairBlond,
+      figureNavy,
+      figureOlive,
+      figureRust,
+      figureDenim,
       figureAccent,
     };
   }, []);

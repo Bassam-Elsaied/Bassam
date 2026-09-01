@@ -210,10 +210,7 @@
 
   /* Link underline that draws in from the left on hover. */
   .link-underline {
-    background-image: linear-gradient(
-      var(--color-accent),
-      var(--color-accent)
-    );
+    background-image: linear-gradient(var(--color-accent), var(--color-accent));
     background-repeat: no-repeat;
     background-position: 0 100%;
     background-size: 0% 1px;
@@ -289,5 +286,4 @@ html.studio-cursor * {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-
 }

@@ -1,6 +1,7 @@
 import type { Vector3 } from "three";
 
-import { GALLERY_WALLS } from "@/lib/three/environmentCollision";
+import { crowdColliders } from "@/lib/three/crowdColliders";
+import { GALLERY_WALLS, type Obstacle } from "@/lib/three/environmentCollision";
 import { BOUNDS, FIGURE, OBSTACLES } from "@/lib/three/layout";
 import { room } from "@/lib/three/palette";
 
@@ -37,6 +38,70 @@ const CAMERA_MIN_HEIGHT = 0.8;
 
 const CAMERA_INFLATION = CAMERA_COLLISION_RADIUS + CAMERA_SURFACE_MARGIN;
 
+function collideBox(
+  box: Obstacle,
+  r: number,
+  position: Vector3,
+  velocity: Vector3,
+): void {
+  const dx = position.x - box.x;
+  const dz = position.z - box.z;
+  const lx = dx * box.cos - dz * box.sin;
+  const lz = dx * box.sin + dz * box.cos;
+
+  if (
+    Math.abs(lx) > box.halfWidth + r ||
+    Math.abs(lz) > box.halfDepth + r
+  ) {
+    return;
+  }
+
+  const closestX = clamp(lx, -box.halfWidth, box.halfWidth);
+  const closestZ = clamp(lz, -box.halfDepth, box.halfDepth);
+
+  let normalX = lx - closestX;
+  let normalZ = lz - closestZ;
+  const distSq = normalX * normalX + normalZ * normalZ;
+
+  if (distSq > r * r) return;
+
+  let localX: number;
+  let localZ: number;
+
+  if (distSq > 1e-8) {
+    const dist = Math.sqrt(distSq);
+    normalX /= dist;
+    normalZ /= dist;
+    localX = closestX + normalX * r;
+    localZ = closestZ + normalZ * r;
+  } else {
+    const escapeX = box.halfWidth + r - Math.abs(lx);
+    const escapeZ = box.halfDepth + r - Math.abs(lz);
+    if (escapeX < escapeZ) {
+      normalX = lx >= 0 ? 1 : -1;
+      normalZ = 0;
+      localX = normalX * (box.halfWidth + r);
+      localZ = lz;
+    } else {
+      normalX = 0;
+      normalZ = lz >= 0 ? 1 : -1;
+      localX = lx;
+      localZ = normalZ * (box.halfDepth + r);
+    }
+  }
+
+  position.x = box.x + localX * box.cos + localZ * box.sin;
+  position.z = box.z - localX * box.sin + localZ * box.cos;
+
+  const worldNormalX = normalX * box.cos + normalZ * box.sin;
+  const worldNormalZ = -normalX * box.sin + normalZ * box.cos;
+  const inward = velocity.x * worldNormalX + velocity.z * worldNormalZ;
+  if (inward < 0) {
+    velocity.x -= worldNormalX * inward;
+    velocity.z -= worldNormalZ * inward;
+  }
+}
+
 /**
  * Pushes `position` out of anything it overlaps and cancels the velocity
  * heading into that surface. Mutates both.
@@ -45,69 +110,10 @@ export function resolveCollision(position: Vector3, velocity: Vector3): void {
   const r = FIGURE.radius;
 
   for (const box of OBSTACLES) {
-    /* Into the box's own frame, where the test is axis-aligned. */
-    const dx = position.x - box.x;
-    const dz = position.z - box.z;
-    const lx = dx * box.cos - dz * box.sin;
-    const lz = dx * box.sin + dz * box.cos;
-
-    /* Trivial reject before any square root. */
-    if (
-      Math.abs(lx) > box.halfWidth + r ||
-      Math.abs(lz) > box.halfDepth + r
-    ) {
-      continue;
-    }
-
-    const closestX = clamp(lx, -box.halfWidth, box.halfWidth);
-    const closestZ = clamp(lz, -box.halfDepth, box.halfDepth);
-
-    let normalX = lx - closestX;
-    let normalZ = lz - closestZ;
-    const distSq = normalX * normalX + normalZ * normalZ;
-
-    if (distSq > r * r) continue;
-
-    let localX: number;
-    let localZ: number;
-
-    if (distSq > 1e-8) {
-      /* Outside the box but within the radius: push straight out. */
-      const dist = Math.sqrt(distSq);
-      normalX /= dist;
-      normalZ /= dist;
-      localX = closestX + normalX * r;
-      localZ = closestZ + normalZ * r;
-    } else {
-      /* Centre is inside the box — only reachable if something teleported
-         the visitor. Eject along whichever axis is nearest to daylight. */
-      const escapeX = box.halfWidth + r - Math.abs(lx);
-      const escapeZ = box.halfDepth + r - Math.abs(lz);
-      if (escapeX < escapeZ) {
-        normalX = lx >= 0 ? 1 : -1;
-        normalZ = 0;
-        localX = normalX * (box.halfWidth + r);
-        localZ = lz;
-      } else {
-        normalX = 0;
-        normalZ = lz >= 0 ? 1 : -1;
-        localX = lx;
-        localZ = normalZ * (box.halfDepth + r);
-      }
-    }
-
-    position.x = box.x + localX * box.cos + localZ * box.sin;
-    position.z = box.z - localX * box.sin + localZ * box.cos;
-
-    /* Same rotation applied to the normal, then strip the inward part of
-       the velocity so the visitor slides along the face. */
-    const worldNormalX = normalX * box.cos + normalZ * box.sin;
-    const worldNormalZ = -normalX * box.sin + normalZ * box.cos;
-    const inward = velocity.x * worldNormalX + velocity.z * worldNormalZ;
-    if (inward < 0) {
-      velocity.x -= worldNormalX * inward;
-      velocity.z -= worldNormalZ * inward;
-    }
+    collideBox(box, r, position, velocity);
+  }
+  for (const box of crowdColliders()) {
+    collideBox(box, r, position, velocity);
   }
 
   if (position.x < BOUNDS.minX) {
@@ -282,20 +288,28 @@ export function isWalkable(x: number, z: number): boolean {
     return false;
   }
 
-  for (const box of OBSTACLES) {
+  if (overlapsAny(OBSTACLES, x, z) || overlapsAny(crowdColliders(), x, z)) {
+    return false;
+  }
+
+  return true;
+}
+
+function overlapsAny(boxes: readonly Obstacle[], x: number, z: number): boolean {
+  const r = FIGURE.radius;
+  for (const box of boxes) {
     const dx = x - box.x;
     const dz = z - box.z;
     const lx = dx * box.cos - dz * box.sin;
     const lz = dx * box.sin + dz * box.cos;
     if (
-      Math.abs(lx) <= box.halfWidth + FIGURE.radius &&
-      Math.abs(lz) <= box.halfDepth + FIGURE.radius
+      Math.abs(lx) <= box.halfWidth + r &&
+      Math.abs(lz) <= box.halfDepth + r
     ) {
-      return false;
+      return true;
     }
   }
-
-  return true;
+  return false;
 }
 
 function clamp(value: number, min: number, max: number): number {

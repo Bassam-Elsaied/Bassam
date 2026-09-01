@@ -5,11 +5,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { TextReveal } from "@/components/ui/TextReveal";
 import { WorkArchive } from "@/components/work/WorkArchive";
 import { WorkCase } from "@/components/work/WorkCase";
-import {
-  featuredProjects,
-  otherProjects,
-  projects,
-} from "@/data/projects";
+import { featuredProjects, otherProjects, projects } from "@/data/projects";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -42,9 +38,9 @@ export default function WorkPage() {
 
           <Reveal delay={0.22}>
             <p className="lead text-muted mt-8 max-w-2xl text-balance lg:mt-10">
-              A restaurant menu platform, two shops, a restaurant ordering site, and a
-              handful of smaller builds. Written up for what was built — not
-              linked out to client production.
+              A restaurant menu platform, two shops, a restaurant ordering site,
+              and a handful of smaller builds. Written up for what was built —
+              not linked out to client production.
             </p>
           </Reveal>
 
@@ -78,14 +74,14 @@ export default function WorkPage() {
                 id="philosophy-heading"
                 className="lead lg:col-span-8 lg:col-start-5"
               >
-                Each entry below is a shipped build: the problem, the stack,
-                and the pieces that went out the door —{" "}
+                Each entry below is a shipped build: the problem, the stack, and
+                the pieces that went out the door —{" "}
                 <strong className="text-foreground font-medium">
                   maintainable
                 </strong>
                 ,{" "}
-                <strong className="text-foreground font-medium">honest</strong>
-                , and{" "}
+                <strong className="text-foreground font-medium">honest</strong>,
+                and{" "}
                 <strong className="text-foreground font-medium">
                   actually used
                 </strong>

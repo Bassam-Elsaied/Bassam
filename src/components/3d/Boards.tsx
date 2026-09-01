@@ -5,6 +5,7 @@ import { useFrame, type ThreeEvent } from "@react-three/fiber";
 import { Color, type Group, type Mesh, type MeshStandardMaterial } from "three";
 import { useRouter } from "next/navigation";
 
+import { WallNote } from "@/components/3d/WallNote";
 import { boards, type Board } from "@/data/boards";
 import type { QualityProfile } from "@/hooks/useDeviceQuality";
 import { boardFaces } from "@/lib/three/boardFaces";
@@ -36,6 +37,7 @@ export function Boards({ materials, quality }: BoardsProps) {
           quality={quality}
         />
       ))}
+      <WallNote quality={quality} />
     </group>
   );
 }
@@ -286,3 +288,4 @@ function InteractiveBoard({
     </group>
   );
 }
+

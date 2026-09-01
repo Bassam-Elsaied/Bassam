@@ -23,8 +23,8 @@ export default function NotFound() {
         </h1>
 
         <p className="lead text-muted mt-8 max-w-md">
-          The page you were looking for does not exist. Everything else is
-          still where you left it.
+          The page you were looking for does not exist. Everything else is still
+          where you left it.
         </p>
 
         <nav aria-label="Site sections" className="mt-14">

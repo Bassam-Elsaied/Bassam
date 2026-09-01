@@ -46,6 +46,18 @@ export const palette = {
   figureSkin: "#C9B8A6",
   /** Near-black hair / eye silhouette. */
   figureHair: "#1A1613",
+  /** Warm brown hair for crowd variety. */
+  figureHairBrown: "#3A2A20",
+  /** Bone-blond hair, still in the gallery palette. */
+  figureHairBlond: "#C4AE84",
+  /** Navy cloth for visitors. */
+  figureNavy: "#2C3340",
+  /** Olive cloth for visitors. */
+  figureOlive: "#4A463C",
+  /** Dusty rust knit / jacket. */
+  figureRust: "#6A4336",
+  /** Cool denim for casual visitors. */
+  figureDenim: "#4A5360",
 
   /** Dark exhibition metal. */
   metal: "#2a2520",

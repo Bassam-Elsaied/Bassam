@@ -1,6 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -95,7 +102,7 @@ export function MobileNav() {
       if (event.key !== "Tab" || !panelRef.current) return;
 
       const focusable = panelRef.current.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled])',
+        "a[href], button:not([disabled])",
       );
       if (focusable.length === 0) return;
 
@@ -140,16 +147,8 @@ export function MobileNav() {
             initial={
               reduced ? { opacity: 0 } : { clipPath: "inset(0 0 100% 0)" }
             }
-            animate={
-              reduced
-                ? { opacity: 1 }
-                : { clipPath: "inset(0 0 0% 0)" }
-            }
-            exit={
-              reduced
-                ? { opacity: 0 }
-                : { clipPath: "inset(0 0 100% 0)" }
-            }
+            animate={reduced ? { opacity: 1 } : { clipPath: "inset(0 0 0% 0)" }}
+            exit={reduced ? { opacity: 0 } : { clipPath: "inset(0 0 100% 0)" }}
             transition={{ duration: reduced ? 0.2 : 0.7, ease: EASE }}
           >
             <nav aria-label="Primary" className="flex-1">
@@ -256,9 +255,7 @@ export function MobileNav() {
         aria-controls={panelId}
         className={cn(
           "meta relative z-[90] px-1 py-2 transition-colors duration-300",
-          open
-            ? "text-background"
-            : "text-foreground",
+          open ? "text-background" : "text-foreground",
         )}
       >
         {open ? "Close" : "Menu"}

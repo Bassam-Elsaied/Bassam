@@ -4,6 +4,7 @@ import { Boards } from "@/components/3d/Boards";
 import { CameraController } from "@/components/3d/CameraController";
 import { Character } from "@/components/3d/Character";
 import { CollisionDebug } from "@/components/3d/CollisionDebug";
+import { CrowdMount } from "@/components/3d/Crowd";
 import { Environment } from "@/components/3d/Environment";
 import { Lighting } from "@/components/3d/Lighting";
 import { Particles } from "@/components/3d/Particles";
@@ -20,6 +21,7 @@ import { palette } from "@/lib/three/palette";
  *   ├── Environment
  *   ├── Boards
  *   ├── Character
+ *   ├── Crowd
  *   └── Particles
  *
  * Materials are built once here and handed down so all boards and
@@ -38,6 +40,7 @@ export function World({ quality }: { quality: QualityProfile }) {
       <Environment quality={quality} />
       <Boards materials={materials} quality={quality} />
       <Character materials={materials} quality={quality} />
+      <CrowdMount materials={materials} quality={quality} />
       <Particles quality={quality} />
       <CollisionDebug />
     </>

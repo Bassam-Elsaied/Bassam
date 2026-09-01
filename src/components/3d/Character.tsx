@@ -23,6 +23,7 @@ import { cameraLook, lookClickSuppressed } from "@/lib/three/cameraLook";
 import { FIGURE } from "@/lib/three/layout";
 import type { GalleryMaterials } from "@/lib/three/materials";
 import { movementGate } from "@/lib/three/movementGate";
+import { playerPose } from "@/lib/three/playerPose";
 import { room } from "@/lib/three/palette";
 import {
   createTelemetry,
@@ -72,6 +73,9 @@ export function Character({
     const delta = Math.min(rawDelta, 0.1);
 
     controller.step(delta, cameraRig.offset);
+    playerPose.x = controller.position.x;
+    playerPose.z = controller.position.z;
+    playerPose.speed = controller.motion.speed;
 
     if (group.current) {
       group.current.position.copy(controller.position);

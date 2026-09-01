@@ -9,7 +9,10 @@ export function ContactCta() {
   return (
     <section id="contact" className="sunlight py-20">
       <Container>
-        <div aria-hidden="true" className="bg-line mb-14 h-px w-full lg:mb-20" />
+        <div
+          aria-hidden="true"
+          className="bg-line mb-14 h-px w-full lg:mb-20"
+        />
 
         <MetaLabel as="p" marker className="mb-8">
           04 — Contact

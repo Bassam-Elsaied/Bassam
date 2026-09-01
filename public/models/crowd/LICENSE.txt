@@ -1,0 +1,11 @@
+Quaternius Ultimate Modular Men Pack + Ultimate Modular Women Pack
+Sources:
+https://quaternius.com/packs/ultimatemodularcharacters.html
+https://quaternius.com/packs/ultimatemodularwomen.html
+Official men folder: https://drive.google.com/drive/folders/1USAAquX2JJWuA2m6zol0KUkFe3UkZ8zX
+Official women folder: https://drive.google.com/drive/folders/1720N9IGyQHXYvtvZJzazhxtTTlz-y2Vf
+License: CC0 1.0 — https://creativecommons.org/publicdomain/zero/1.0/
+
+Runtime files are stripped GLBs (idle / idle-neutral / walk only) of:
+Casual Hoodie, Casual 2 (men); Casual, Suit (women).
+The player Suit GLB in /models/character is reused for male-suit visitors.
