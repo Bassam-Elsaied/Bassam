@@ -25,7 +25,7 @@ export function Hero() {
 
       <Container className="py-14 lg:py-20">
         <TextRevealLines
-          as="h1"
+          as="h2"
           srPrefix={`${profile.name}, ${profile.role}. `}
           lines={[profile.headline.lead, profile.headline.trail]}
           className="display-xl"

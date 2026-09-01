@@ -21,9 +21,9 @@ export function SkipExplorationButton({
       type="button"
       onClick={onSkip}
       className={cn(
-        "meta-sm pointer-events-auto shrink-0 whitespace-nowrap py-1 transition-colors duration-300",
+        "meta-sm pointer-events-auto shrink-0 whitespace-nowrap py-2 transition-colors duration-300",
         tone === "paper"
-          ? "text-foreground/40 hover:text-foreground"
+          ? "text-foreground/70 hover:text-accent inline-flex min-h-11 items-center"
           : "text-background/40 hover:text-background",
       )}
     >
