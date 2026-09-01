@@ -79,8 +79,8 @@ export default function AboutPage() {
 
               <Reveal delay={0.2}>
                 <p className="lead text-muted mt-8 max-w-[34ch] text-balance lg:mt-10">
-                  Egypt. React and Next.js, plus the Node.js and databases
-                  behind them when the product needs it.
+                  React and Next.js, plus the Node.js and databases behind them
+                  when the product needs it.
                 </p>
               </Reveal>
 
@@ -112,8 +112,8 @@ export default function AboutPage() {
                   storefront that has to stay fast while the catalogue grows, a
                   dashboard an owner actually wants to open, a menu that loads
                   instantly on a phone in a restaurant. The front end is where I
-                  spend the most time, and knowing the back end is what makes the
-                  front end honest.
+                  spend the most time, and knowing the back end is what makes
+                  the front end honest.
                 </p>
               </Reveal>
               <Reveal
@@ -146,8 +146,8 @@ export default function AboutPage() {
                 </h2>
               </div>
               <p className="lead text-muted mt-6 max-w-md lg:mt-0 lg:max-w-[36ch] lg:text-right">
-                Three years on interfaces, one year behind them. The count
-                below is the work I can stand behind in public.
+                Three years on interfaces, one year behind them. The count below
+                is the work I can stand behind in public.
               </p>
             </div>
           </Reveal>
@@ -193,8 +193,8 @@ export default function AboutPage() {
                 <span className="text-accent">.</span>
               </h2>
               <p className="lead text-muted lg:col-span-5 lg:col-start-8">
-                The stack on the projects in this portfolio, grouped by where
-                it sits in a build.
+                The stack on the projects in this portfolio, grouped by where it
+                sits in a build.
               </p>
             </div>
           </Reveal>
@@ -237,7 +237,10 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section aria-labelledby="working-together" className="bg-ink text-background">
+      <section
+        aria-labelledby="working-together"
+        className="bg-ink text-background"
+      >
         <Container className="py-20 lg:py-28">
           <Reveal>
             <div className="grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-10">

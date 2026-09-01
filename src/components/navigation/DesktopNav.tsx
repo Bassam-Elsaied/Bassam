@@ -63,7 +63,7 @@ export function DesktopNav() {
                   <span
                     aria-hidden="true"
                     className={cn(
-                      "bg-accent absolute -bottom-1.5 left-0 h-px transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                      "bg-accent absolute -bottom-1.5 left-0 h-px transition-all duration-500 ease-editorial",
                       isActive ? "w-full" : "w-0 group-hover:w-full",
                     )}
                   />

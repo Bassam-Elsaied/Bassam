@@ -8,7 +8,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata({
   title: "Contact",
   description:
-    "Start a project with Bassam Elsayed. Freelance and full-time, based in Egypt. Replies within 24 hours.",
+    "Start a project with Bassam Elsayed. Freelance and full-time. Replies within 24 hours.",
   path: "/contact",
 });
 
@@ -38,7 +38,11 @@ export default function ContactPage() {
 
           <Reveal delay={0.3} className="mt-12 lg:mt-auto lg:pt-16">
             <div className="bg-ink text-background -mx-5 px-5 py-10 sm:-mx-8 sm:px-8 sm:py-12 lg:mx-0 lg:px-8 lg:py-10">
-              <MetaLabel as="p" marker className="text-[var(--color-ink-muted)]">
+              <MetaLabel
+                as="p"
+                marker
+                className="text-[var(--color-ink-muted)]"
+              >
                 {profile.availability}
               </MetaLabel>
 

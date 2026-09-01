@@ -46,13 +46,12 @@ export const profile = {
   },
 
   intro:
-    "Frontend developer in Egypt. Three years on the interface, one year on the server. I build React and Next.js products, including the APIs and databases they depend on.",
+    "Frontend developer . Three years on the interface, one year on the server. I build React and Next.js products, including the APIs and databases they depend on.",
 
   about:
     "I'm based in Egypt. Most weeks I'm in React and Next.js; the last year I've also been writing the Node.js APIs and databases those interfaces talk to. The work I can show is restaurant menus, shops, and dashboards — things people open on a phone or behind a counter.",
 
-  aboutSummary:
-    "I build the screens and the APIs they use",
+  aboutSummary: "I build the screens and the APIs they use",
 } as const;
 
 export const stats: Stat[] = [
